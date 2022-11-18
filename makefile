@@ -1,6 +1,6 @@
-all: main
-main: main.o sipRetryClient.o sipUdpClient.o sipRequest.o utils.o
-	g++ bin/main.o bin/sipRetryClient.o bin/sipUdpClient.o bin/sipRequest.o bin/utils.o -o bin/main
+all: sipping
+sipping: main.o sipRetryClient.o sipUdpClient.o sipRequest.o utils.o
+	g++ bin/main.o bin/sipRetryClient.o bin/sipUdpClient.o bin/sipRequest.o bin/utils.o -o bin/sipping
 main.o: src/main.cpp
 	g++ -c src/main.cpp -o bin/main.o
 sipRetryClient.o: sipRequest.o
@@ -12,4 +12,4 @@ sipRequest.o:
 utils.o:
 	g++ -c src/utils.cpp -o bin/utils.o
 clean:
-	rm bin/*.o bin/main
+	rm bin/*
