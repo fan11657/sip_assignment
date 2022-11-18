@@ -4,14 +4,14 @@
 
 class SipUdpClient : SipClient {
 public:
-	SipUdpClient(string ip, int port, string user_agent);
+	SipUdpClient(SipUser from, SipUser to, string user_agent);
 	~SipUdpClient();
 	int send(SipRequest::Method method);
 	void set_timeout(timeval timeout);
 private:
 	int socket_id;
-	string ip;
-	int port;
+	SipUser from;
+	SipUser to;
 	struct sockaddr_in socket_address;
 	struct timeval timeout;
 	string user_agent;

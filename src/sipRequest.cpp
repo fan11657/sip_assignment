@@ -3,13 +3,13 @@
 #include "sipRequest.h"
 #include "utils.h"
 
-SipRequest::SipRequest(Method method, Transport transport, string to, string from, string user_agent) {
+SipRequest::SipRequest(Method method, Transport transport, SipUser from, SipUser to, string user_agent) {
 	this->method = method;
 	this->version = "SIP/2.0";
 	this->transport = transport;
 	this->max_forward = 70;
-	this->to = to;
 	this->from = from;
+	this->to = to;
 	const int TAG_LEN = 20;
 	this->from_tag = RandomStrGenerator::generate(TAG_LEN);
 	const int BRANCH_LEN = 20;
@@ -25,12 +25,12 @@ string SipRequest::build_message() {
 	const string MAGIC_COOKIE = "z9hG4bK";
 
 	stringstream stream;
-	stream << method_str() << SPACE << "sip:" << to << SPACE << version << endl;
-	stream << "Via:" << version << '/' << transport << SPACE << from << ";branch=" << MAGIC_COOKIE << branch << endl;
-	stream << "From:" << SPACE << "<sip:" << from << ">;tag=" << from_tag << endl;
-	stream << "To:" << SPACE << "<sip:" << to << ">" << endl;
+	stream << method_str() << SPACE << "sip:" << to.user_name << '@' << to.ip << SPACE << version << endl;
+	stream << "Via:" << version << '/' << transport << SPACE << from.ip << ':' << from.port << ";branch=" << MAGIC_COOKIE << branch << endl;
+	stream << "From:" << SPACE << "<sip:" << from.user_name << '@' << from.ip << ">;tag=" << from_tag << endl;
+	stream << "To:" << SPACE << "<sip:" << to.user_name << '@' << to.ip << ">" << endl;
 	stream << "Max-Forwards:" << SPACE << max_forward << endl;
-	stream << "Contact:" << SPACE << "<sip:" << from << ";transport=" << transport_str() << ">" << endl;
+	stream << "Contact:" << SPACE << "<sip:" << from.user_name << '@' << from.ip << ':' << from.port << ";transport=" << transport_str() << ">" << endl;
 	stream << "Call-ID:" << SPACE << call_id << endl;
 	stream << "CSeq:" << SPACE << cseq << SPACE << method_str() << endl;
 	stream << "Supported:" << SPACE << "outbound" << endl;

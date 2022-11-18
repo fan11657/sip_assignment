@@ -1,13 +1,13 @@
 #include <arpa/inet.h>
-//#include <iostream>
+#include <iostream>
 #include <string.h>
 #include <sys/socket.h>
 #include <unistd.h> 
 #include "sipUdpClient.h"
 
-SipUdpClient::SipUdpClient(string ip, int port, string user_agent) {
-	this->ip = ip;
-	this->port = port;
+SipUdpClient::SipUdpClient(SipUser from, SipUser to, string user_agent) {
+	this->from = from;
+	this->to = to;
 	this->user_agent = user_agent;
 	this->socket_id = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	
@@ -15,16 +15,16 @@ SipUdpClient::SipUdpClient(string ip, int port, string user_agent) {
 	
 	memset(&(this->socket_address), 0, sizeof(this->socket_address));
 	this->socket_address.sin_family = AF_INET;
-	this->socket_address.sin_addr.s_addr = inet_addr(ip.c_str());
-	this->socket_address.sin_port = htons(port);
+	this->socket_address.sin_addr.s_addr = inet_addr(to.ip.c_str());
+	this->socket_address.sin_port = htons(to.port);
 }
 SipUdpClient::~SipUdpClient() {
 	close(socket_id);
 }
 int SipUdpClient::send(SipRequest::Method method) {
-	SipRequest request(method, SipRequest::Transport::UDP, "0.0.0.0", "0.0.0.0", user_agent);
+	SipRequest request(method, SipRequest::Transport::UDP, from, to, user_agent);
 	string msg = request.build_message();
-	//cout << msg << endl;
+	cout << msg << endl;
 	int sent_len = sendto(socket_id, msg.c_str(), msg.length(), MSG_CONFIRM, (struct sockaddr*)&socket_address, sizeof(socket_address));
 	if (sent_len == SO_ERROR) {
 		return -1;
@@ -41,7 +41,7 @@ int SipUdpClient::send(SipRequest::Method method) {
 	}
 
 	string recv = string(recv_buffer, recv_len);
-	//cout << recv << endl;
+	cout << recv << endl;
 	return 1;
 }
 void SipUdpClient::set_timeout(timeval timeout) {

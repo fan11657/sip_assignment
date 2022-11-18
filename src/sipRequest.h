@@ -2,6 +2,8 @@
 #define Included_SipRequest_H
 
 #include <string>
+#include "sipUser.h"
+
 using namespace std;
 class SipRequest {
 public:
@@ -17,15 +19,15 @@ public:
 		TCP,
 		UDP
 	};
-	SipRequest(Method method, Transport transport, string to, string from, string user_agent);
+	SipRequest(Method method, Transport transport, SipUser from, SipUser to, string user_agent);
 	string build_message();
 private:
 	Method method;
 	Transport transport;
 	string version;
 	int max_forward;
-	string to;
-	string from;
+	SipUser from;
+	SipUser to;
 	// A peer has unique tag
 	string from_tag;
 	// Every request/transaction has unique branch
