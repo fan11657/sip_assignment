@@ -1,6 +1,6 @@
 #include <string>
 #include <netdb.h>
-#include "SipClient.h"
+#include "sipClient.h"
 
 class SipUdpClient : SipClient {
 public:

@@ -1,5 +1,5 @@
 #include <sys/time.h>
-#include "SipRetryClient.h"
+#include "sipRetryClient.h"
 
 SipRetryClient::SipRetryClient(SipClient *sip_client, int max_retry) {
 	this->sip_client = sip_client;
