@@ -20,6 +20,15 @@ An assignment from CINNOX.
    2. `sudo apt install net-tools`
 5. `make`
 
+# If Debian is not available for you:
+1. cd into repo root.
+2. `docker build -t sipping .`
+3. (Optional) `docker image prune`
+4. `docker run -it --rm sipping`
+
 # How to run:
-1. `.bin/sipping <ip> <port>`  
+1. `./bin/sipping <ip> <port>` or `sipping <ip> <port>` if you use docker way.
    e.g. `./bin/sipping "172.30.100.23" 5060`
+2. You can test it by following two step:
+   1. `nc -ul -p 5060 -c 'echo SIP/2.0 200 OK' &`
+   2. `./bin/sipping "0.0.0.0" 5060`
