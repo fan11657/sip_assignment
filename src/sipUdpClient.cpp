@@ -25,7 +25,7 @@ int SipUdpClient::send(SipRequest::Method method) {
 	SipRequest request(method, SipRequest::Transport::UDP, from, to, user_agent);
 	string msg = request.build_message();
 	int sent_len = sendto(socket_id, msg.c_str(), msg.length(), MSG_CONFIRM, (struct sockaddr*)&socket_address, sizeof(socket_address));
-	if (sent_len == SO_ERROR) {
+	if (sent_len < 0) {
 		return -1;
 	}
 
@@ -35,11 +35,16 @@ int SipUdpClient::send(SipRequest::Method method) {
 	char recv_buffer[BUFLEN] = {};
 	socklen_t addr_len = sizeof(socket_address);
 	int recv_len = recvfrom(socket_id, recv_buffer, BUFLEN, 0, (sockaddr*)&socket_address, &addr_len);
-	if (recv_len < 0 || recv_len == SO_ERROR) {
+	if (recv_len < 0) {
 		return -1;
 	}
-
 	string recv = string(recv_buffer, recv_len);
+	const int STATUS_CODE_LEN = 3;
+	string status_code = recv.substr(recv.find(' ') + 1, STATUS_CODE_LEN);
+	cout << recv << endl;
+	if (status_code != "200") {
+		return -1;
+	}
 	return 1;
 }
 void SipUdpClient::set_timeout(timeval timeout) {

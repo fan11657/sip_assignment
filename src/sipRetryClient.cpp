@@ -1,3 +1,4 @@
+#include <errno.h>
 #include <sys/time.h>
 #include "sipRetryClient.h"
 
@@ -15,6 +16,10 @@ int SipRetryClient::send(SipRequest::Method method) {
 		if (result > 0) {
 			return result;
 		}
+		if (errno == 0) {
+			return -1;
+		}
+
 		timeout = double_time(timeout);
 		if (timercmp(&timeout, &max_timeout, > )) {
 			timeout = max_timeout;
