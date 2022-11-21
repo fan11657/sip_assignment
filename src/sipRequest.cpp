@@ -26,7 +26,7 @@ string SipRequest::build_message() {
 
 	stringstream stream;
 	stream << method_str() << SPACE << "sip:" << to.user_name << '@' << to.ip << SPACE << version << endl;
-	stream << "Via:" << version << '/' << transport << SPACE << from.ip << ':' << from.port << ";branch=" << MAGIC_COOKIE << branch << endl;
+	stream << "Via:" << SPACE << version << '/' << transport_str() << SPACE << from.ip << ':' << from.port << ";branch=" << MAGIC_COOKIE << branch << endl;
 	stream << "From:" << SPACE << "<sip:" << from.user_name << '@' << from.ip << ">;tag=" << from_tag << endl;
 	stream << "To:" << SPACE << "<sip:" << to.user_name << '@' << to.ip << ">" << endl;
 	stream << "Max-Forwards:" << SPACE << max_forward << endl;
