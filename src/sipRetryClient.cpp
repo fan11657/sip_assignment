@@ -1,4 +1,5 @@
 #include <errno.h>
+#include <iostream>
 #include <sys/time.h>
 #include "sipRetryClient.h"
 
@@ -25,6 +26,7 @@ int SipRetryClient::send(SipRequest::Method method) {
 			timeout = max_timeout;
 		}
 	}
+	cout << "Timout - Reach Max Retry: " << max_retry << endl;
 	return -1;
 }
 
