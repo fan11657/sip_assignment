@@ -24,7 +24,6 @@ SipUdpClient::~SipUdpClient() {
 int SipUdpClient::send(SipRequest::Method method) {
 	SipRequest request(method, SipRequest::Transport::UDP, from, to, user_agent);
 	string msg = request.build_message();
-	cout << msg << endl;
 	int sent_len = sendto(socket_id, msg.c_str(), msg.length(), MSG_CONFIRM, (struct sockaddr*)&socket_address, sizeof(socket_address));
 	if (sent_len == SO_ERROR) {
 		return -1;
@@ -41,7 +40,6 @@ int SipUdpClient::send(SipRequest::Method method) {
 	}
 
 	string recv = string(recv_buffer, recv_len);
-	cout << recv << endl;
 	return 1;
 }
 void SipUdpClient::set_timeout(timeval timeout) {
