@@ -32,3 +32,6 @@ An assignment from CINNOX.
 2. You can test it by following two steps:
    1. `nc -ul -p 5060 -c 'echo SIP/2.0 200 OK' &`
    2. `./bin/sipping "0.0.0.0" 5060 10`
+
+# You can see demo video here:
+![](sipping_demo.gif)
