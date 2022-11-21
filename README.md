@@ -27,8 +27,8 @@ An assignment from CINNOX.
 4. `docker run -it --rm sipping`
 
 # How to run:
-1. `./bin/sipping <ip> <port>` or `sipping <ip> <port>` if you use docker way.
+1. `./bin/sipping <ip> <port>` (or simply `sipping <ip> <port>` if you use docker way).  
    e.g. `./bin/sipping "172.30.100.23" 5060`
-2. You can test it by following two step:
+2. You can test it by following two steps:
    1. `nc -ul -p 5060 -c 'echo SIP/2.0 200 OK' &`
    2. `./bin/sipping "0.0.0.0" 5060`
